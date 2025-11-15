@@ -1,8 +1,11 @@
 import { useState } from "react"
+import { useNavigate, useOutletContext } from "react-router-dom"
 
 function DirectorForm() {
   const [name, setName] = useState("")
   const [bio, setBio] = useState("")
+  const navigate = useNavigate()
+  const { setDirectors } = useOutletContext()
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -19,9 +22,8 @@ function DirectorForm() {
         return r.json()
     })
     .then(data => {
-        console.log(data)
-        // handle context/state changes
-        // navigate to newly created director page
+        setDirectors(prev => [...prev, data])
+        navigate(`/directors/${data.id}`)
     })
     .catch(console.log)
   }
